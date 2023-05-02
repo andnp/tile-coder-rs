@@ -2,3 +2,4 @@ target/
 env/
 *.egg-info
 *.so
+*.pyc
