@@ -1,0 +1,6 @@
+maturin
+setuptools
+wheel
+
+numpy
+PyFixedReps-andnp

@@ -1,0 +1,12 @@
+[package]
+name = "tile-coder"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "tile_coder"
+crate-type = ["cdylib"]
+
+[dependencies]
+numpy = "0.18.0"
+pyo3 = "0.18.3"

@@ -1,0 +1,4 @@
+target/
+env/
+*.egg-info
+*.so
