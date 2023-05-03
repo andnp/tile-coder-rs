@@ -3,4 +3,5 @@ setuptools
 wheel
 
 numpy
+numba
 PyFixedReps-andnp
