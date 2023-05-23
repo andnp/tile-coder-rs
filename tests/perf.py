@@ -6,12 +6,20 @@ shared_setup = """
 import numpy as np
 
 from PyFixedReps.TileCoder import TileCoder, TileCoderConfig
-from tile_coder import TileCoder as RustTileCoder
+from tc import TileCoder as RustTileCoder
 
 config = TileCoderConfig(
     tiles=8,
     tilings=64,
     dims=6,
+    input_ranges=[
+        (0, 1),
+        (0, 1),
+        (0, 1),
+        (0, 1),
+        (0, 1),
+        (0, 2),
+    ]
 )
 arr = np.arange(6) / 6
 """

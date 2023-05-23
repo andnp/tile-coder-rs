@@ -1,6 +1,5 @@
-from .tile_coder import get_tc_indices
+from tile_coder import get_tc_indices
 
-import numba
 import numpy as np
 import numpy.typing as npt
 
@@ -76,7 +75,3 @@ def _normalize_scalars(sc: Sequence[Optional[Tuple[float, float]]]):
             out.append(r)
 
     return np.array(out, dtype=np.float64)
-
-@numba.njit(cache=True, fastmath=True, nogil=True)
-def minMaxScaling(x: np.ndarray, mi: np.ndarray, ma: np.ndarray):
-    return (x - mi) / (ma - mi)
