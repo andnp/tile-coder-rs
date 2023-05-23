@@ -51,7 +51,7 @@ fn tile_coder(_py: Python, m: &PyModule) -> PyResult<()> {
     fn test_py<'py>(
         py: Python<'py>,
         dims: u32,
-        tiles: u32,
+        tiles: PyReadonlyArray1<u32>,
         tilings: u32,
         bounds: PyReadonlyArray2<f64>,
         offsets: PyReadonlyArray2<f64>,
@@ -60,6 +60,7 @@ fn tile_coder(_py: Python, m: &PyModule) -> PyResult<()> {
         let offsets = offsets.as_array();
         let pos = pos.as_array();
         let bounds = bounds.as_array();
+        let tiles = tiles.as_array();
 
         let pos = apply_bounds(pos, bounds);
         let res = py.allow_threads(|| tc::get_tc_indices(dims, tiles, tilings, offsets, pos));
