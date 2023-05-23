@@ -1,5 +1,6 @@
 use std::str::FromStr;
 
+use numpy::ndarray::{ArrayView1, ArrayView2, Array1, Zip};
 use numpy::{IntoPyArray, PyReadonlyArray2};
 use numpy::{PyArray1,PyReadonlyArray1};
 use pyo3::prelude::*;
@@ -9,6 +10,7 @@ mod tc;
 enum BoundStrat {
     Clip,
     Wrap,
+    Scale,
 }
 
 impl FromStr for BoundStrat {
@@ -18,13 +20,27 @@ impl FromStr for BoundStrat {
         match input {
             "clip" => Ok(BoundStrat::Clip),
             "wrap" => Ok(BoundStrat::Wrap),
+            "scale" => Ok(BoundStrat::Scale),
             _ => Err(()),
         }
     }
 }
 
-fn bound(x: ) {
+fn minmax_scale(pos: f64, bound: ArrayView1<f64>) -> f64 {
+    (pos - bound[0]) / (bound[1] - bound[0])
+}
 
+fn apply_bounds(pos: ArrayView1<f64>, bounds: ArrayView2<f64>) -> Array1<f64> {
+    let mut out: Array1<f64> = Array1::zeros(pos.raw_dim());
+
+    Zip::from(&mut out)
+        .and(&pos)
+        .and(bounds.rows())
+        .for_each(|o, &p, b| {
+            *o = minmax_scale(p, b);
+        });
+
+    out
 }
 
 /// A Python module implemented in Rust.
@@ -37,10 +53,16 @@ fn tile_coder(_py: Python, m: &PyModule) -> PyResult<()> {
         dims: u32,
         tiles: u32,
         tilings: u32,
+        bounds: PyReadonlyArray2<f64>,
         offsets: PyReadonlyArray2<f64>,
         pos: PyReadonlyArray1<f64>,
     ) -> &'py PyArray1<u32> {
-        let res = tc::get_tc_indices(dims, tiles, tilings, offsets, pos);
+        let offsets = offsets.as_array();
+        let pos = pos.as_array();
+        let bounds = bounds.as_array();
+
+        let pos = apply_bounds(pos, bounds);
+        let res = py.allow_threads(|| tc::get_tc_indices(dims, tiles, tilings, offsets, pos));
         res.into_pyarray(py)
     }
 

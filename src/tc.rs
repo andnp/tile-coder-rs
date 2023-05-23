@@ -24,9 +24,6 @@ pub fn get_tc_indices(dims: u32, tiles: u32, tilings: u32, offsets: PyReadonlyAr
     let total_tiles = tiles.pow(dims);
     let mut index = Array1::zeros(tilings as usize);
 
-    let pos = pos.as_array();
-
-    let offsets = offsets.as_array();
     for ntl in 0..tilings {
         let off = offsets.slice(s![ntl as usize, ..]);
         let arr = &pos + &off;
