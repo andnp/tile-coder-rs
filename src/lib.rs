@@ -45,7 +45,7 @@ fn apply_bounds(pos: ArrayView1<f64>, bounds: ArrayView2<f64>) -> Array1<f64> {
 
 /// A Python module implemented in Rust.
 #[pymodule]
-fn tile_coder(_py: Python, m: &PyModule) -> PyResult<()> {
+fn tile_coder_rs(_py: Python, m: &PyModule) -> PyResult<()> {
     #[pyfn(m)]
     #[pyo3(name="get_tc_indices")]
     fn test_py<'py>(

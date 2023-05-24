@@ -1,4 +1,4 @@
-from tile_coder import get_tc_indices
+from tile_coder_rs import get_tc_indices
 
 import numpy as np
 import numpy.typing as npt
