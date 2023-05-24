@@ -63,7 +63,7 @@ fn tile_coder(_py: Python, m: &PyModule) -> PyResult<()> {
         let tiles = tiles.as_array();
 
         let pos = apply_bounds(pos, bounds);
-        let res = py.allow_threads(|| tc::get_tc_indices(dims, tiles, tilings, offsets, pos));
+        let res = py.allow_threads(|| tc::get_tc_indices(dims, &tiles, tilings, &offsets, &pos));
         res.into_pyarray(py)
     }
 

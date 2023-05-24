@@ -21,7 +21,7 @@ class TileCoder(BaseRepresentation):
         self._tiles = _normalize_tiles(c.tiles, c.dims)
         self._input_ranges = _normalize_scalars(ranges)
         self._tiling_offsets = np.array([ self._build_offset(ntl) for ntl in range(c.tilings) ], dtype=np.float64)
-        self._total_tiles: int = c.tilings * self._tiles.prod()
+        self._total_tiles = int(c.tilings * self._tiles.prod())
 
     # construct tiling offsets
     # defaults to evenly spaced tilings
