@@ -21,7 +21,7 @@ fn get_tiling_index(dims: u32, tiles_per_tiling: u32, tiles_per_dim: &ArrayView1
         already_seen *= tiles;
     }
 
-    ind.clamp(0, tiles_per_tiling - 1)
+    ind % tiles_per_tiling
 }
 
 pub fn get_tc_indices(dims: u32, tiles: &ArrayView1<u32>, tilings: u32, offsets: &ArrayView2<f64>, pos: &Array1<f64>) -> Array1<u32> {
