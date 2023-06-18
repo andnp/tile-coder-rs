@@ -1,9 +1,8 @@
 import numpy as np
-from typing import Sequence
 
 def get_tc_indices(
     dims: int,
-    tiles: Sequence[int],
+    tiles: np.ndarray,
     tilings: int,
     bounds: np.ndarray,
     offsets: np.ndarray,
