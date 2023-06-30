@@ -276,7 +276,7 @@ checksum = "fd1ba337640d60c3e96bc6f0638a939b9c9a7f2c316a1598c279828b3d1dc8c5"
 
 [[package]]
 name = "tile-coder-rs"
-version = "0.3.1"
+version = "0.4.0"
 dependencies = [
  "numpy",
  "pyo3",

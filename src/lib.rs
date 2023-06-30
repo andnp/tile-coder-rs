@@ -7,10 +7,9 @@ use pyo3::prelude::*;
 
 mod tc;
 
-enum BoundStrat {
+pub enum BoundStrat {
     Clip,
     Wrap,
-    Scale,
 }
 
 impl FromStr for BoundStrat {
@@ -20,7 +19,6 @@ impl FromStr for BoundStrat {
         match input {
             "clip" => Ok(BoundStrat::Clip),
             "wrap" => Ok(BoundStrat::Wrap),
-            "scale" => Ok(BoundStrat::Scale),
             _ => Err(()),
         }
     }
@@ -55,15 +53,21 @@ fn tile_coder_rs(_py: Python, m: &PyModule) -> PyResult<()> {
         tilings: u32,
         bounds: PyReadonlyArray2<f64>,
         offsets: PyReadonlyArray2<f64>,
+        bound_strats: Vec<&str>,
         pos: PyReadonlyArray1<f64>,
     ) -> &'py PyArray1<u32> {
         let offsets = offsets.as_array();
         let pos = pos.as_array();
         let bounds = bounds.as_array();
         let tiles = tiles.as_array();
+        let bound_strats: Vec<BoundStrat> =
+            bound_strats
+                .iter()
+                .map(|v| BoundStrat::from_str(&v).expect("Unknown bounding strategy!"))
+                .collect();
 
         let pos = apply_bounds(pos, bounds);
-        let res = py.allow_threads(|| tc::get_tc_indices(dims, &tiles, tilings, &offsets, &pos));
+        let res = py.allow_threads(|| tc::get_tc_indices(dims, &tiles, tilings, &offsets, &bound_strats, &pos));
         res.into_pyarray(py)
     }
 
